@@ -1,0 +1,531 @@
+diff --git a/a.js b/b.js
+index d1c7f3d8..59e75ae4 100644
+--- a/a.js
++++ b/b.js
+@@ -14,7 +14,7 @@ it('should update a vue object', done => {
+       }).then(done)
+     })
+ 
+-    it('should update a observing object', done => {
++    it('should update an observing object', done => {
+       const vm = new Vue({
+         template: '<div>{{foo.x}}</div>',
+         data: { foo: { x: 1 }}
+@@ -26,7 +26,7 @@ it('should update a observing object', done => {
+       }).then(done)
+     })
+ 
+-    it('should update a observing array', done => {
++    it('should update an observing array', done => {
+       const vm = new Vue({
+         template: '<div><div v-for="v,k in list">{{k}}-{{v}}</div></div>',
+         data: { list: ['a', 'b', 'c'] }
+diff --git a/a.js b/b.js
+index 9f240c77..3168a1ff 100644
+--- a/a.js
++++ b/b.js
+@@ -35,7 +35,7 @@ export function isPrimitive (value: any): boolean %checks {
+ 
+ /**
+  * Quick object check - this is primarily used to tell
+- * Objects from primitive values when we know the value
++ * objects from primitive values when we know the value
+  * is a JSON-compliant type.
+  */
+ export function isObject (obj: mixed): boolean %checks {
+diff --git a/a.js b/b.js
+index a23775d4..60c43373 100644
+--- a/a.js
++++ b/b.js
+@@ -22,7 +22,7 @@ export function createInstanceContext (
+     data
+   }
+ 
+-  // Each instance has a independent `Vue` module instance
++  // Each instance has an independent `Vue` module instance
+   const Vue = instance.Vue = createVueModuleInstance(instanceId, weex)
+ 
+   // DEPRECATED
+diff --git a/a.js b/b.js
+index 1e492f7f..8ce085de 100644
+--- a/a.js
++++ b/b.js
+@@ -7,7 +7,7 @@ describe('Component async', () => {
+   const oldClearTimeout = window.clearTimeout;
+ 
+   // will contain pending timeouts set during the test iteration
+-  // will contain the id of the timeout as the key, and the the millisecond timeout as the value
++  // will contain the id of the timeout as the key, and the millisecond timeout as the value
+   // this helps to identify the timeout that is still pending
+   let timeoutsPending = {};
+ 
+diff --git a/a.js b/b.js
+index df9ab8db..353d3df5 100644
+--- a/a.js
++++ b/b.js
+@@ -31,7 +31,7 @@ expect(spy.calls.count()).toBe(1)
+     expect(event.type).toBe('click')
+   })
+ 
+-  it('should bind event to a inline statement', () => {
++  it('should bind event to an inline statement', () => {
+     vm = new Vue({
+       el,
+       template: '<div v-on:click="foo(1,2,3,$event)"></div>',
+diff --git a/a.js b/b.js
+index 09ce8e7d..04c8d80e 100644
+--- a/a.js
++++ b/b.js
+@@ -52,7 +52,7 @@ renderToString(new Vue({
+   })
+ 
+   // #5941
+-  it('should work peoperly when accessing $ssrContext in root component', done => {
++  it('should work properly when accessing $ssrContext in root component', done => {
+     let ssrContext
+     renderToString(new Vue({
+       template: `
+diff --git a/a.js b/b.js
+index 8e9d584a..a77b055c 100644
+--- a/a.js
++++ b/b.js
+@@ -1327,7 +1327,7 @@ waitForUpdate(() => {
+   })
+ 
+   // #11652
+-  it('should update when swtching between two components with slot and without slot', done => {
++  it('should update when switching between two components with slot and without slot', done => {
+     const Child = {
+       template: `<div><slot/></div>`
+     }
+diff --git a/a.js b/b.js
+index 7c252031..353d3df5 100644
+--- a/a.js
++++ b/b.js
+@@ -31,7 +31,7 @@ expect(spy.calls.count()).toBe(1)
+     expect(event.type).toBe('click')
+   })
+ 
+-  it('should bind event to a inline statement', () => {
++  it('should bind event to an inline statement', () => {
+     vm = new Vue({
+       el,
+       template: '<div v-on:click="foo(1,2,3,$event)"></div>',
+@@ -218,7 +218,7 @@ expect(spy).toHaveBeenCalled()
+   })
+ 
+   // ctrl, shift, alt, meta
+-  it('should support system modifers', () => {
++  it('should support system modifiers', () => {
+     vm = new Vue({
+       el,
+       template: `
+diff --git a/a.js b/b.js
+index dcb5a229..378c959c 100644
+--- a/a.js
++++ b/b.js
+@@ -23,7 +23,7 @@ function transformNode (el: ASTElement, options: CompilerOptions) {
+     }
+   }
+   if (staticClass) {
+-    el.staticClass = JSON.stringify(staticClass)
++    el.staticClass = JSON.stringify(staticClass.replace(/\s+/g, ' ').trim())
+   }
+   const classBinding = getBindingAttr(el, 'class', false /* getStatic */)
+   if (classBinding) {
+diff --git a/a.js b/b.js
+index b4f96287..33094be9 100644
+--- a/a.js
++++ b/b.js
+@@ -1351,7 +1351,7 @@ renderVmWithOptions({
+       </div>
+       `
+     }, result => {
+-      expect(result).toContain(`<div class="a\nb"></div>`)
++      expect(result).toContain(`<div class="a b"></div>`)
+       done()
+     })
+   })
+diff --git a/a.js b/b.js
+index 0ee3380c..38a25988 100644
+--- a/a.js
++++ b/b.js
+@@ -152,6 +152,39 @@ waitForUpdate(() => {
+     }).then(done)
+   })
+ 
++  // css static classes should only contain a single space in between,
++  // as all the text inside of classes is shipped as a JS string
++  // and this could lead to useless spacing in static classes
++  it('condenses whitespace in staticClass', done => {
++    const vm = new Vue({
++      template: '<div class=" test1\ntest2\ttest3 test4   test5 \n \n \ntest6\t"></div>',
++    }).$mount()
++    expect(vm.$el.className).toBe('test1 test2 test3 test4 test5 test6')
++    done()
++  })
++
++  it('condenses whitespace in staticClass merge in a component', done => {
++    const vm = new Vue({
++      template: `
++        <component1 class="\n\t staticClass \t\n" :class="componentClass1">
++        </component1>
++      `,
++      data: {
++        componentClass1: 'componentClass1',
++      },
++      components: {
++        component1: {
++          template: '<div class="\n\t test \t\n"></div>'
++        },
++      }
++    }).$mount()
++    expect(vm.$el.className).toBe('test staticClass componentClass1')
++    vm.componentClass1 = 'c1'
++    waitForUpdate(() => {
++      expect(vm.$el.className).toBe('test staticClass c1')
++    }).then(done)
++  })
++
+   // a vdom patch edge case where the user has several un-keyed elements of the
+   // same tag next to each other, and toggling them.
+   it('properly remove staticClass for toggling un-keyed children', done => {
+diff --git a/a.js b/b.js
+index ecb08af3..3c60fd5d 100644
+--- a/a.js
++++ b/b.js
+@@ -5,6 +5,7 @@
+ import { isIE, isFF, supportsPassive, isUsingMicroTask } from 'core/util/index'
+ import { RANGE_TOKEN, CHECKBOX_RADIO_TOKEN } from 'web/compiler/directives/model'
+ import { currentFlushTimestamp } from 'core/observer/scheduler'
++import { emptyNode } from 'core/vdom/patch'
+ 
+ // normalize v-model event tokens that can only be determined at runtime.
+ // it's important to place the event as the first in the array because
+@@ -108,7 +109,9 @@ function updateDOMListeners (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+   }
+   const on = vnode.data.on || {}
+   const oldOn = oldVnode.data.on || {}
+-  target = vnode.elm
++  // vnode is empty when removing all listeners,
++  // and use old vnode dom element
++  target = vnode.elm || oldVnode.elm
+   normalizeEvents(on)
+   updateListeners(on, oldOn, add, remove, createOnceHandler, vnode.context)
+   target = undefined
+@@ -116,5 +119,6 @@ updateListeners(on, oldOn, add, remove, createOnceHandler, vnode.context)
+ 
+ export default {
+   create: updateDOMListeners,
+-  update: updateDOMListeners
++  update: updateDOMListeners,
++  destroy: (vnode: VNodeWithData) => updateDOMListeners(vnode, emptyNode)
+ }
+diff --git a/a.js b/b.js
+index c8734958..9d30d2c7 100644
+--- a/a.js
++++ b/b.js
+@@ -1249,5 +1249,37 @@ const bar = (resolve) => {
+         }).then(done)
+       }
+     })
++
++    // #10083
++    it('should not attach event handler repeatedly', done => {
++      const vm = new Vue({
++        template: `
++          <keep-alive>
++            <btn v-if="showBtn" @click.native="add" />
++          </keep-alive>
++        `,
++        data: { showBtn: true, n: 0 },
++        methods: {
++          add () {
++            this.n++
++          }
++        },
++        components: {
++          btn: { template: '<button>add 1</button>' }
++        }
++      }).$mount()
++
++      const btn = vm.$el
++      expect(vm.n).toBe(0)
++      btn.click()
++      expect(vm.n).toBe(1)
++      vm.showBtn = false
++      waitForUpdate(() => {
++        vm.showBtn = true
++      }).then(() => {
++        btn.click()
++        expect(vm.n).toBe(2)
++      }).then(done)
++    })
+   }
+ })
+diff --git a/a.js b/b.js
+index ae2a2498..ec7b8757 100644
+--- a/a.js
++++ b/b.js
+@@ -1,6 +1,6 @@
+ const hash = require('hash-sum')
+ const uniq = require('lodash.uniq')
+-import { isJS, isCSS, onEmit } from './util'
++import { isJS, isCSS, getAssetName, onEmit, stripModuleIdHash } from './util'
+ 
+ export default class VueSSRClientPlugin {
+   constructor (options = {}) {
+@@ -10,7 +10,8 @@ constructor (options = {}) {
+   }
+ 
+   apply (compiler) {
+-    onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
++    const stage = 'PROCESS_ASSETS_STAGE_ADDITIONAL'
++    onEmit(compiler, 'vue-client-plugin', stage, (compilation, cb) => {
+       const stats = compilation.getStats().toJson()
+ 
+       const allFiles = uniq(stats.assets
+@@ -19,6 +20,7 @@ onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
+       const initialFiles = uniq(Object.keys(stats.entrypoints)
+         .map(name => stats.entrypoints[name].assets)
+         .reduce((assets, all) => all.concat(assets), [])
++        .map(getAssetName)
+         .filter((file) => isJS(file) || isCSS(file)))
+ 
+       const asyncFiles = allFiles
+@@ -34,7 +36,7 @@ onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
+       }
+ 
+       const assetModules = stats.modules.filter(m => m.assets.length)
+-      const fileToIndex = file => manifest.all.indexOf(file)
++      const fileToIndex = asset => manifest.all.indexOf(getAssetName(asset))
+       stats.modules.forEach(m => {
+         // ignore modules duplicated in multiple chunks
+         if (m.chunks.length === 1) {
+@@ -43,7 +45,7 @@ const fileToIndex = file =>
+           if (!chunk || !chunk.files) {
+             return
+           }
+-          const id = m.identifier.replace(/\s\w+$/, '') // remove appended hash
++          const id = stripModuleIdHash(m.identifier)
+           const files = manifest.modules[hash(id)] = chunk.files.map(fileToIndex)
+           // find all asset modules associated with the same chunk
+           assetModules.forEach(m => {
+diff --git a/a.js b/b.js
+index 305b4bab..02fab245 100644
+--- a/a.js
++++ b/b.js
+@@ -1,4 +1,4 @@
+-import { validate, isJS, onEmit } from './util'
++import { validate, isJS, getAssetName, onEmit } from './util'
+ 
+ export default class VueSSRServerPlugin {
+   constructor (options = {}) {
+@@ -10,7 +10,8 @@ constructor (options = {}) {
+   apply (compiler) {
+     validate(compiler)
+ 
+-    onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
++    const stage = 'PROCESS_ASSETS_STAGE_OPTIMIZE_TRANSFER'
++    onEmit(compiler, 'vue-server-plugin', stage, (compilation, cb) => {
+       const stats = compilation.getStats().toJson()
+       const entryName = Object.keys(stats.entrypoints)[0]
+       const entryInfo = stats.entrypoints[entryName]
+@@ -20,7 +21,9 @@ onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
+         return cb()
+       }
+ 
+-      const entryAssets = entryInfo.assets.filter(isJS)
++      const entryAssets = entryInfo.assets
++        .map(getAssetName)
++        .filter(isJS)
+ 
+       if (entryAssets.length > 1) {
+         throw new Error(
+@@ -42,14 +45,14 @@ onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
+         maps: {}
+       }
+ 
+-      stats.assets.forEach(asset => {
+-        if (isJS(asset.name)) {
+-          bundle.files[asset.name] = compilation.assets[asset.name].source()
+-        } else if (asset.name.match(/\.js\.map$/)) {
+-          bundle.maps[asset.name.replace(/\.map$/, '')] = JSON.parse(compilation.assets[asset.name].source())
++      Object.keys(compilation.assets).forEach(name => {
++        if (isJS(name)) {
++          bundle.files[name] = compilation.assets[name].source()
++        } else if (name.match(/\.js\.map$/)) {
++          bundle.maps[name.replace(/\.map$/, '')] = JSON.parse(compilation.assets[name].source())
+         }
+         // do not emit anything else for server
+-        delete compilation.assets[asset.name]
++        delete compilation.assets[name]
+       })
+ 
+       const json = JSON.stringify(bundle, null, 2)
+diff --git a/a.js b/b.js
+index 94a204a2..844671bb 100644
+--- a/a.js
++++ b/b.js
+@@ -1,16 +1,27 @@
+ const { red, yellow } = require('chalk')
++const webpack = require('webpack')
+ 
+ const prefix = `[vue-server-renderer-webpack-plugin]`
+ const warn = exports.warn = msg => console.error(red(`${prefix} ${msg}\n`))
+ const tip = exports.tip = msg => console.log(yellow(`${prefix} ${msg}\n`))
+ 
++const isWebpack5 = !!(webpack.version && webpack.version[0] > 4)
++
+ export const validate = compiler => {
+   if (compiler.options.target !== 'node') {
+     warn('webpack config `target` should be "node".')
+   }
+ 
+-  if (compiler.options.output && compiler.options.output.libraryTarget !== 'commonjs2') {
+-    warn('webpack config `output.libraryTarget` should be "commonjs2".')
++  if (compiler.options.output) {
++    if (compiler.options.output.library) {
++      // Webpack >= 5.0.0
++      if (compiler.options.output.library.type !== 'commonjs2') {
++        warn('webpack config `output.library.type` should be "commonjs2".')
++      }
++    } else if (compiler.options.output.libraryTarget !== 'commonjs2') {
++      // Webpack < 5.0.0
++      warn('webpack config `output.libraryTarget` should be "commonjs2".')
++    }
+   }
+ 
+   if (!compiler.options.externals) {
+@@ -21,8 +32,20 @@ tip(
+   }
+ }
+ 
+-export const onEmit = (compiler, name, hook) => {
+-  if (compiler.hooks) {
++export const onEmit = (compiler, name, stageName, hook) => {
++  if (isWebpack5) {
++    // Webpack >= 5.0.0
++    compiler.hooks.compilation.tap(name, compilation => {
++      if (compilation.compiler !== compiler) {
++        // Ignore child compilers
++        return
++      }
++      const stage = webpack.Compilation[stageName]
++      compilation.hooks.processAssets.tapAsync({ name, stage }, (assets, cb) => {
++        hook(compilation, cb)
++      })
++    })
++  } else if (compiler.hooks) {
+     // Webpack >= 4.0.0
+     compiler.hooks.emit.tapAsync(name, hook)
+   } else {
+@@ -31,4 +54,20 @@ tip(
+   }
+ }
+ 
++export const stripModuleIdHash = id => {
++  if (isWebpack5) {
++    // Webpack >= 5.0.0
++    return id.replace(/\|\w+$/, '')
++  }
++  // Webpack < 5.0.0
++  return id.replace(/\s\w+$/, '')
++}
++
++export const getAssetName = asset => {
++  if (typeof asset === 'string') {
++    return asset
++  }
++  return asset.name
++}
++
+ export { isJS, isCSS } from '../util'
+diff --git a/a.js b/b.js
+index 15ab396d..13df231f 100644
+--- a/a.js
++++ b/b.js
+@@ -61,10 +61,10 @@   const normalized = function () {
+     res = res && typeof res === 'object' && !Array.isArray(res)
+       ? [res] // single vnode
+       : normalizeChildren(res)
+-    let vnode: VNode = res && res[0]
++    let vnode: ?VNode = res && res[0]
+     return res && (
+       !vnode ||
+-      (vnode.isComment && !isAsyncPlaceholder(vnode)) // #9658, #10391
++      (res.length === 1 && vnode.isComment && !isAsyncPlaceholder(vnode)) // #9658, #10391
+     ) ? undefined
+       : res
+   }
+diff --git a/a.js b/b.js
+index c6e20e49..4412a1f0 100644
+--- a/a.js
++++ b/b.js
+@@ -986,4 +986,18 @@ waitForUpdate(() => {
+       expect(vm.$el.firstChild.innerHTML).toBe('<span><b>2</b></span>')
+     }).then(done)
+   })
++
++  // #12102
++  it('v-if inside scoped slot', () => {
++    const vm = new Vue({
++      template: `<test><template #custom><span v-if="false">a</span><span>b</span></template></test>`,
++      components: {
++        test: {
++          template: `<div><slot name="custom"/></div>`
++        }
++      }
++    }).$mount()
++
++    expect(vm.$el.innerHTML).toBe(`<!----><span>b</span>`)
++  })
+ })
+diff --git a/a.js b/b.js
+index 61abfce9..33094be9 100644
+--- a/a.js
++++ b/b.js
+@@ -694,6 +694,34 @@ renderToString(new Vue({
+     })
+   })
+ 
++  // #11963, #10391
++  it('renders async children passed in slots', done => {
++    const Parent = {
++      template: `<div><slot name="child"/></div>`
++    }
++    const Child = {
++      template: `<p>child</p>`
++    }
++    renderVmWithOptions({
++      template: `
++      <Parent>
++        <template #child>
++          <Child/>
++        </template>
++      </Parent>
++      `,
++      components: {
++        Parent,
++        Child: () => Promise.resolve(Child)
++      }
++    }, result => {
++      expect(result).toContain(
++        `<div data-server-rendered="true"><p>child</p></div>`
++      )
++      done()
++    })
++  })
++
+   it('everything together', done => {
+     renderVmWithOptions({
+       template: `
+@@ -1323,7 +1351,7 @@ renderVmWithOptions({
+       </div>
+       `
+     }, result => {
+-      expect(result).toContain(`<div class="a\nb"></div>`)
++      expect(result).toContain(`<div class="a b"></div>`)
+       done()
+     })
+   })

@@ -1,0 +1,771 @@
+diff --git a/a.js b/b.js
+@@ -14,7 +14,7 @@ it('should update a vue object', done => {
+A blob:
+import Vue from 'vue'
+
+describe('Global API: set/delete', () => {
+  describe('Vue.set', () => {
+    it('should update a vue object', done => {
+      const vm = new Vue({
+        template: '<div>{{x}}</div>',
+        data: { x: 1 }
+      }).$mount()
+      expect(vm.$el.innerHTML).toBe('1')
+      Vue.set(vm, 'x', 2)
+      waitForUpdate(() => {
+        expect(vm.$el.innerHTML).toBe('2')
+      }).then(done)
+    })
+
+    it('should update a observing object', done => {
+      const vm = new Vue({
+        template: '<div>{{foo.x}}</div>',
+        data: { foo: { x: 1 }}
+      }).$mount()
+diff --git a/a.js b/b.js
+@@ -26,7 +26,7 @@ it('should update a observing object', done => {
+A blob:
+      waitForUpdate(() => {
+        expect(vm.$el.innerHTML).toBe('2')
+      }).then(done)
+    })
+
+    it('should update a observing object', done => {
+      const vm = new Vue({
+        template: '<div>{{foo.x}}</div>',
+        data: { foo: { x: 1 }}
+      }).$mount()
+      expect(vm.$el.innerHTML).toBe('1')
+      Vue.set(vm.foo, 'x', 2)
+      waitForUpdate(() => {
+        expect(vm.$el.innerHTML).toBe('2')
+      }).then(done)
+    })
+
+    it('should update a observing array', done => {
+      const vm = new Vue({
+        template: '<div><div v-for="v,k in list">{{k}}-{{v}}</div></div>',
+        data: { list: ['a', 'b', 'c'] }
+      }).$mount()
+diff --git a/a.js b/b.js
+@@ -35,7 +35,7 @@ export function isPrimitive (value: any): boolean %checks {
+A blob:
+}
+
+/**
+ * Check if value is primitive.
+ */
+export function isPrimitive (value: any): boolean %checks {
+  return (
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    // $flow-disable-line
+    typeof value === 'symbol' ||
+    typeof value === 'boolean'
+  )
+}
+
+/**
+ * Quick object check - this is primarily used to tell
+ * Objects from primitive values when we know the value
+ * is a JSON-compliant type.
+ */
+export function isObject (obj: mixed): boolean %checks {
+  return obj !== null && typeof obj === 'object'
+diff --git a/a.js b/b.js
+@@ -22,7 +22,7 @@ export function createInstanceContext (
+A blob:
+const instanceOptions: { [key: string]: WeexInstanceOption } = {}
+
+/**
+ * Create instance context.
+ */
+export function createInstanceContext (
+  instanceId: string,
+  runtimeContext: WeexRuntimeContext,
+  data: Object = {}
+): WeexInstanceContext {
+  const weex: Weex = runtimeContext.weex
+  const instance: WeexInstanceOption = instanceOptions[instanceId] = {
+    instanceId,
+    config: weex.config,
+    document: weex.document,
+    data
+  }
+
+  // Each instance has a independent `Vue` module instance
+  const Vue = instance.Vue = createVueModuleInstance(instanceId, weex)
+
+  // DEPRECATED
+  const timerAPIs = getInstanceTimer(instanceId, weex.requireModule)
+diff --git a/a.js b/b.js
+@@ -7,7 +7,7 @@ describe('Component async', () => {
+A blob:
+import Vue from 'vue'
+import { Promise } from 'es6-promise'
+
+describe('Component async', () => {
+
+  const oldSetTimeout = window.setTimeout;
+  const oldClearTimeout = window.clearTimeout;
+
+  // will contain pending timeouts set during the test iteration
+  // will contain the id of the timeout as the key, and the the millisecond timeout as the value
+  // this helps to identify the timeout that is still pending
+  let timeoutsPending = {};
+
+  beforeEach(function () {
+diff --git a/a.js b/b.js
+@@ -31,7 +31,7 @@ expect(spy.calls.count()).toBe(1)
+A blob:
+      el,
+      template: '<div v-on:click="foo"></div>',
+      methods: { foo: spy }
+    })
+    triggerEvent(vm.$el, 'click')
+    expect(spy.calls.count()).toBe(1)
+
+    const args = spy.calls.allArgs()
+    const event = args[0] && args[0][0] || {}
+    expect(event.type).toBe('click')
+  })
+
+  it('should bind event to a inline statement', () => {
+    vm = new Vue({
+      el,
+      template: '<div v-on:click="foo(1,2,3,$event)"></div>',
+      methods: { foo: spy }
+diff --git a/a.js b/b.js
+@@ -52,7 +52,7 @@ renderToString(new Vue({
+A blob:
+import Vue from '../../dist/vue.runtime.common.js'
+import renderToString from '../../packages/vue-server-renderer/basic'
+
+describe('SSR: basicRenderer', () => {
+  it('should work', done => {
+    renderToString(new Vue({
+      template: `
+        <div>
+          <p class="hi">yoyo</p>
+          <div id="ho" :class="{ red: isRed }"></div>
+          <span>{{ test }}</span>
+          <input :value="test">
+          <img :src="imageUrl">
+          <test></test>
+          <test-async></test-async>
+        </div>
+      `,
+      data: {
+        test: 'hi',
+        isRed: true,
+        imageUrl: 'https://vuejs.org/images/logo.png'
+      },
+      components: {
+        test: {
+          render () {
+            return this.$createElement('div', { class: ['a'] }, 'test')
+          }
+        },
+        testAsync (resolve) {
+          resolve({
+            render () {
+              return this.$createElement('span', { class: ['b'] }, 'testAsync')
+            }
+          })
+        }
+      }
+    }), (err, result) => {
+      expect(err).toBeNull()
+      expect(result).toContain(
+        '<div data-server-rendered="true">' +
+          '<p class="hi">yoyo</p> ' +
+          '<div id="ho" class="red"></div> ' +
+          '<span>hi</span> ' +
+          '<input value="hi"> ' +
+          '<img src="https://vuejs.org/images/logo.png"> ' +
+          '<div class="a">test</div> ' +
+          '<span class="b">testAsync</span>' +
+        '</div>'
+      )
+      done()
+    })
+  })
+
+  // #5941
+  it('should work peoperly when accessing $ssrContext in root component', done => {
+    let ssrContext
+    renderToString(new Vue({
+      template: `
+        <div></div>
+diff --git a/a.js b/b.js
+@@ -1327,7 +1327,7 @@ waitForUpdate(() => {
+A blob:
+      }
+    }).$mount()
+
+    expect(vm.$el.textContent).toMatch(`0`)
+    vm.count++
+    waitForUpdate(() => {
+      expect(vm.$el.textContent).toMatch(`1`)
+    }).then(done)
+  })
+
+  // #11652
+  it('should update when swtching between two components with slot and without slot', done => {
+    const Child = {
+      template: `<div><slot/></div>`
+    }
+
+diff --git a/a.js b/b.js
+@@ -31,7 +31,7 @@ expect(spy.calls.count()).toBe(1)
+A blob:
+      el,
+      template: '<div v-on:click="foo"></div>',
+      methods: { foo: spy }
+    })
+    triggerEvent(vm.$el, 'click')
+    expect(spy.calls.count()).toBe(1)
+
+    const args = spy.calls.allArgs()
+    const event = args[0] && args[0][0] || {}
+    expect(event.type).toBe('click')
+  })
+
+  it('should bind event to a inline statement', () => {
+    vm = new Vue({
+      el,
+      template: '<div v-on:click="foo(1,2,3,$event)"></div>',
+      methods: { foo: spy }
+diff --git a/a.js b/b.js
+@@ -218,7 +218,7 @@ expect(spy).toHaveBeenCalled()
+A blob:
+      methods: { foo: spy }
+    })
+    triggerEvent(vm.$el, 'keyup', e => {
+      e.key = 'ArrowRight'
+    })
+    expect(spy).toHaveBeenCalled()
+  })
+
+  // ctrl, shift, alt, meta
+  it('should support system modifers', () => {
+    vm = new Vue({
+      el,
+      template: `
+        <div>
+diff --git a/a.js b/b.js
+@@ -23,7 +23,7 @@ function transformNode (el: ASTElement, options: CompilerOptions) {
+A blob:
+  getAndRemoveAttr,
+  getBindingAttr,
+  baseWarn
+} from 'compiler/helpers'
+
+function transformNode (el: ASTElement, options: CompilerOptions) {
+  const warn = options.warn || baseWarn
+  const staticClass = getAndRemoveAttr(el, 'class')
+  if (process.env.NODE_ENV !== 'production' && staticClass) {
+    const res = parseText(staticClass, options.delimiters)
+    if (res) {
+      warn(
+        `class="${staticClass}": ` +
+        'Interpolation inside attributes has been removed. ' +
+        'Use v-bind or the colon shorthand instead. For example, ' +
+        'instead of <div class="{{ val }}">, use <div :class="val">.',
+        el.rawAttrsMap['class']
+      )
+    }
+  }
+  if (staticClass) {
+    el.staticClass = JSON.stringify(staticClass)
+  }
+  const classBinding = getBindingAttr(el, 'class', false /* getStatic */)
+  if (classBinding) {
+    el.classBinding = classBinding
+diff --git a/a.js b/b.js
+@@ -1351,7 +1351,7 @@ renderVmWithOptions({
+A blob:
+    })
+  })
+
+  // #7859
+  it('should not double escape class values', done => {
+    renderVmWithOptions({
+      template: `
+      <div>
+        <div class="a\nb"></div>
+      </div>
+      `
+    }, result => {
+      expect(result).toContain(`<div class="a\nb"></div>`)
+      done()
+    })
+  })
+
+diff --git a/a.js b/b.js
+@@ -152,6 +152,39 @@ waitForUpdate(() => {
+A blob:
+        test: { a: true, b: false }
+      }
+    }).$mount()
+    expect(vm.$el.className).toBe('a')
+    vm.test.b = true
+    waitForUpdate(() => {
+      expect(vm.$el.className).toBe('a b')
+    }).then(done)
+  })
+
+  // a vdom patch edge case where the user has several un-keyed elements of the
+  // same tag next to each other, and toggling them.
+  it('properly remove staticClass for toggling un-keyed children', done => {
+    const vm = new Vue({
+diff --git a/a.js b/b.js
+@@ -108,7 +109,9 @@ function updateDOMListeners (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+A blob:
+    handler._wrapper || handler,
+    capture
+  )
+}
+
+function updateDOMListeners (oldVnode: VNodeWithData, vnode: VNodeWithData) {
+  if (isUndef(oldVnode.data.on) && isUndef(vnode.data.on)) {
+    return
+  }
+  const on = vnode.data.on || {}
+  const oldOn = oldVnode.data.on || {}
+  target = vnode.elm
+  normalizeEvents(on)
+  updateListeners(on, oldOn, add, remove, createOnceHandler, vnode.context)
+  target = undefined
+}
+diff --git a/a.js b/b.js
+@@ -116,5 +119,6 @@ updateListeners(on, oldOn, add, remove, createOnceHandler, vnode.context)
+A blob:
+  }
+  const on = vnode.data.on || {}
+  const oldOn = oldVnode.data.on || {}
+  target = vnode.elm
+  normalizeEvents(on)
+  updateListeners(on, oldOn, add, remove, createOnceHandler, vnode.context)
+  target = undefined
+}
+
+export default {
+  create: updateDOMListeners,
+  update: updateDOMListeners
+}
+
+diff --git a/a.js b/b.js
+@@ -1249,5 +1249,37 @@ const bar = (resolve) => {
+A blob:
+        setTimeout(() => {
+          resolve(one)
+          Vue.nextTick(next)
+        }, duration / 2)
+      }
+      const bar = (resolve) => {
+        setTimeout(() => {
+          resolve(two)
+          barResolve()
+        }, duration / 2)
+      }
+      components = {
+        foo,
+        bar
+      }
+      const vm = new Vue({
+        template: `<div>
+          <transition name="test" mode="out-in" @after-enter="afterEnter" @after-leave="afterLeave">
+            <keep-alive>
+              <component :is="view" class="test"></component>
+            </keep-alive>
+          </transition>
+        </div>`,
+        data: {
+          view: 'foo'
+        },
+        components,
+        methods: {
+          afterEnter () {
+            next()
+          },
+          afterLeave () {
+            next()
+          }
+        }
+      }).$mount(el)
+      expect(vm.$el.textContent).toBe('')
+      next = () => {
+        assertHookCalls(one, [1, 1, 1, 0, 0])
+        assertHookCalls(two, [0, 0, 0, 0, 0])
+        waitForUpdate(() => {
+          expect(vm.$el.innerHTML).toBe(
+            '<div class="test test-enter test-enter-active">one</div>'
+          )
+        }).thenWaitFor(nextFrame).then(() => {
+          expect(vm.$el.innerHTML).toBe(
+            '<div class="test test-enter-active test-enter-to">one</div>'
+          )
+        }).thenWaitFor(_next => { next = _next }).then(() => {
+          // foo afterEnter get called
+          expect(vm.$el.innerHTML).toBe('<div class="test">one</div>')
+          vm.view = 'bar'
+        }).thenWaitFor(nextFrame).then(() => {
+          assertHookCalls(one, [1, 1, 1, 1, 0])
+          assertHookCalls(two, [0, 0, 0, 0, 0])
+          expect(vm.$el.innerHTML).toBe(
+            '<div class="test test-leave-active test-leave-to">one</div><!---->'
+          )
+        }).thenWaitFor(_next => { next = _next }).then(() => {
+          // foo afterLeave get called
+          // and bar has already been resolved before afterLeave get called
+          expect(barResolve.calls.count()).toBe(1)
+          expect(vm.$el.innerHTML).toBe('<!---->')
+        }).thenWaitFor(nextFrame).then(() => {
+          expect(vm.$el.innerHTML).toBe(
+            '<div class="test test-enter test-enter-active">two</div>'
+          )
+          assertHookCalls(one, [1, 1, 1, 1, 0])
+          assertHookCalls(two, [1, 1, 1, 0, 0])
+        }).thenWaitFor(nextFrame).then(() => {
+          expect(vm.$el.innerHTML).toBe(
+            '<div class="test test-enter-active test-enter-to">two</div>'
+          )
+        }).thenWaitFor(_next => { next = _next }).then(() => {
+          // bar afterEnter get called
+          expect(vm.$el.innerHTML).toBe('<div class="test">two</div>')
+        }).then(done)
+      }
+    })
+  }
+})
+
+diff --git a/a.js b/b.js
+@@ -10,7 +10,8 @@ constructor (options = {}) {
+A blob:
+const hash = require('hash-sum')
+const uniq = require('lodash.uniq')
+import { isJS, isCSS, onEmit } from './util'
+
+export default class VueSSRClientPlugin {
+  constructor (options = {}) {
+    this.options = Object.assign({
+      filename: 'vue-ssr-client-manifest.json'
+    }, options)
+  }
+
+  apply (compiler) {
+    onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
+      const stats = compilation.getStats().toJson()
+
+      const allFiles = uniq(stats.assets
+        .map(a => a.name))
+diff --git a/a.js b/b.js
+@@ -19,6 +20,7 @@ onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
+A blob:
+      filename: 'vue-ssr-client-manifest.json'
+    }, options)
+  }
+
+  apply (compiler) {
+    onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
+      const stats = compilation.getStats().toJson()
+
+      const allFiles = uniq(stats.assets
+        .map(a => a.name))
+
+      const initialFiles = uniq(Object.keys(stats.entrypoints)
+        .map(name => stats.entrypoints[name].assets)
+        .reduce((assets, all) => all.concat(assets), [])
+        .filter((file) => isJS(file) || isCSS(file)))
+
+      const asyncFiles = allFiles
+        .filter((file) => isJS(file) || isCSS(file))
+diff --git a/a.js b/b.js
+@@ -34,7 +36,7 @@ onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
+A blob:
+      filename: 'vue-ssr-client-manifest.json'
+    }, options)
+  }
+
+  apply (compiler) {
+    onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
+      const stats = compilation.getStats().toJson()
+
+      const allFiles = uniq(stats.assets
+        .map(a => a.name))
+
+      const initialFiles = uniq(Object.keys(stats.entrypoints)
+        .map(name => stats.entrypoints[name].assets)
+        .reduce((assets, all) => all.concat(assets), [])
+        .filter((file) => isJS(file) || isCSS(file)))
+
+      const asyncFiles = allFiles
+        .filter((file) => isJS(file) || isCSS(file))
+        .filter(file => initialFiles.indexOf(file) < 0)
+
+      const manifest = {
+        publicPath: stats.publicPath,
+        all: allFiles,
+        initial: initialFiles,
+        async: asyncFiles,
+        modules: { /* [identifier: string]: Array<index: number> */ }
+      }
+
+      const assetModules = stats.modules.filter(m => m.assets.length)
+      const fileToIndex = file => manifest.all.indexOf(file)
+      stats.modules.forEach(m => {
+        // ignore modules duplicated in multiple chunks
+        if (m.chunks.length === 1) {
+          const cid = m.chunks[0]
+diff --git a/a.js b/b.js
+@@ -43,7 +45,7 @@ const fileToIndex = file =>
+A blob:
+        async: asyncFiles,
+        modules: { /* [identifier: string]: Array<index: number> */ }
+      }
+
+      const assetModules = stats.modules.filter(m => m.assets.length)
+      const fileToIndex = file => manifest.all.indexOf(file)
+      stats.modules.forEach(m => {
+        // ignore modules duplicated in multiple chunks
+        if (m.chunks.length === 1) {
+          const cid = m.chunks[0]
+          const chunk = stats.chunks.find(c => c.id === cid)
+          if (!chunk || !chunk.files) {
+            return
+          }
+          const id = m.identifier.replace(/\s\w+$/, '') // remove appended hash
+          const files = manifest.modules[hash(id)] = chunk.files.map(fileToIndex)
+          // find all asset modules associated with the same chunk
+          assetModules.forEach(m => {
+            if (m.chunks.some(id => id === cid)) {
+diff --git a/a.js b/b.js
+@@ -10,7 +10,8 @@ constructor (options = {}) {
+A blob:
+import { validate, isJS, onEmit } from './util'
+
+export default class VueSSRServerPlugin {
+  constructor (options = {}) {
+    this.options = Object.assign({
+      filename: 'vue-ssr-server-bundle.json'
+    }, options)
+  }
+
+  apply (compiler) {
+    validate(compiler)
+
+    onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
+      const stats = compilation.getStats().toJson()
+      const entryName = Object.keys(stats.entrypoints)[0]
+      const entryInfo = stats.entrypoints[entryName]
+
+diff --git a/a.js b/b.js
+@@ -20,7 +21,9 @@ onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
+A blob:
+  }
+
+  apply (compiler) {
+    validate(compiler)
+
+    onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
+      const stats = compilation.getStats().toJson()
+      const entryName = Object.keys(stats.entrypoints)[0]
+      const entryInfo = stats.entrypoints[entryName]
+
+      if (!entryInfo) {
+        // #5553
+        return cb()
+      }
+
+      const entryAssets = entryInfo.assets.filter(isJS)
+
+      if (entryAssets.length > 1) {
+        throw new Error(
+          `Server-side bundle should have one single entry file. ` +
+diff --git a/a.js b/b.js
+@@ -42,14 +45,14 @@ onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
+A blob:
+  }
+
+  apply (compiler) {
+    validate(compiler)
+
+    onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
+      const stats = compilation.getStats().toJson()
+      const entryName = Object.keys(stats.entrypoints)[0]
+      const entryInfo = stats.entrypoints[entryName]
+
+      if (!entryInfo) {
+        // #5553
+        return cb()
+      }
+
+      const entryAssets = entryInfo.assets.filter(isJS)
+
+      if (entryAssets.length > 1) {
+        throw new Error(
+          `Server-side bundle should have one single entry file. ` +
+          `Avoid using CommonsChunkPlugin in the server config.`
+        )
+      }
+
+      const entry = entryAssets[0]
+      if (!entry || typeof entry !== 'string') {
+        throw new Error(
+          `Entry "${entryName}" not found. Did you specify the correct entry option?`
+        )
+      }
+
+      const bundle = {
+        entry,
+        files: {},
+        maps: {}
+      }
+
+      stats.assets.forEach(asset => {
+        if (isJS(asset.name)) {
+          bundle.files[asset.name] = compilation.assets[asset.name].source()
+        } else if (asset.name.match(/\.js\.map$/)) {
+          bundle.maps[asset.name.replace(/\.map$/, '')] = JSON.parse(compilation.assets[asset.name].source())
+        }
+        // do not emit anything else for server
+        delete compilation.assets[asset.name]
+      })
+
+      const json = JSON.stringify(bundle, null, 2)
+      const filename = this.options.filename
+diff --git a/a.js b/b.js
+@@ -21,8 +32,20 @@ tip(
+A blob:
+  if (compiler.options.output && compiler.options.output.libraryTarget !== 'commonjs2') {
+    warn('webpack config `output.libraryTarget` should be "commonjs2".')
+  }
+
+  if (!compiler.options.externals) {
+    tip(
+      'It is recommended to externalize dependencies in the server build for ' +
+      'better build performance.'
+    )
+  }
+}
+
+export const onEmit = (compiler, name, hook) => {
+  if (compiler.hooks) {
+    // Webpack >= 4.0.0
+    compiler.hooks.emit.tapAsync(name, hook)
+  } else {
+    // Webpack < 4.0.0
+diff --git a/a.js b/b.js
+@@ -31,4 +54,20 @@ tip(
+A blob:
+  if (compiler.options.output && compiler.options.output.libraryTarget !== 'commonjs2') {
+    warn('webpack config `output.libraryTarget` should be "commonjs2".')
+  }
+
+  if (!compiler.options.externals) {
+    tip(
+      'It is recommended to externalize dependencies in the server build for ' +
+      'better build performance.'
+    )
+  }
+}
+
+export const onEmit = (compiler, name, hook) => {
+  if (compiler.hooks) {
+    // Webpack >= 4.0.0
+    compiler.hooks.emit.tapAsync(name, hook)
+  } else {
+    // Webpack < 4.0.0
+    compiler.plugin('emit', hook)
+  }
+}
+
+export { isJS, isCSS } from '../util'
+
+diff --git a/a.js b/b.js
+@@ -61,10 +61,10 @@   const normalized = function () {
+A blob:
+  def(res, '$hasNormal', hasNormalSlots)
+  return res
+}
+
+function normalizeScopedSlot(normalSlots, key, fn) {
+  const normalized = function () {
+    let res = arguments.length ? fn.apply(null, arguments) : fn({})
+    res = res && typeof res === 'object' && !Array.isArray(res)
+      ? [res] // single vnode
+      : normalizeChildren(res)
+    let vnode: VNode = res && res[0]
+    return res && (
+      !vnode ||
+      (vnode.isComment && !isAsyncPlaceholder(vnode)) // #9658, #10391
+    ) ? undefined
+      : res
+  }
+  // this is a slot using the new v-slot syntax without scope. although it is
+diff --git a/a.js b/b.js
+@@ -986,4 +986,18 @@ waitForUpdate(() => {
+A blob:
+        }
+      }
+    }).$mount()
+     expect(vm.$el.firstChild.innerHTML).toBe('<span><span><b>1</b></span></span>')
+    parentVm.alter = false
+    waitForUpdate(() => {
+      vm.message = 2
+    }).then(() => {
+      expect(vm.$el.firstChild.innerHTML).toBe('<span><b>2</b></span>')
+    }).then(done)
+  })
+})
+
+diff --git a/a.js b/b.js
+@@ -694,6 +694,34 @@ renderToString(new Vue({
+A blob:
+    })
+  })
+
+  it('should catch async component error', done => {
+    Vue.config.silent = true
+    renderToString(new Vue({
+      template: '<test-async></test-async>',
+      components: {
+        testAsync: () => Promise.resolve({
+          render () {
+            throw new Error('foo')
+          }
+        })
+      }
+    }), (err, result) => {
+      Vue.config.silent = false
+      expect(err).toBeTruthy()
+      expect(result).toBeUndefined()
+      done()
+    })
+  })
+
+  it('everything together', done => {
+    renderVmWithOptions({
+      template: `
+        <div>
+diff --git a/a.js b/b.js
+@@ -1323,7 +1351,7 @@ renderVmWithOptions({
+A blob:
+    })
+  })
+
+  // #7859
+  it('should not double escape class values', done => {
+    renderVmWithOptions({
+      template: `
+      <div>
+        <div class="a\nb"></div>
+      </div>
+      `
+    }, result => {
+      expect(result).toContain(`<div class="a\nb"></div>`)
+      done()
+    })
+  })
+
