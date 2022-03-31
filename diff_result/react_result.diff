@@ -1,0 +1,186 @@
+diff --git a/a.js b/b.js
+index c3a865928..854344df8 100644
+--- a/a.js
++++ b/b.js
+@@ -33,7 +33,7 @@
+   'react-dom': ReactVersion,
+   'react-is': ReactVersion,
+   'react-reconciler': '0.27.0',
+-  'react-refresh': '0.11.0',
++  'react-refresh': '0.12.0',
+   'react-test-renderer': ReactVersion,
+   'use-subscription': '1.6.0',
+   'use-sync-external-store': '1.0.0',
+diff --git a/a.js b/b.js
+index 17fb8ce84..854344df8 100644
+--- a/a.js
++++ b/b.js
+@@ -18,7 +18,7 @@
+ //
+ //   0.0.0-experimental-241c4467e-20200129
+ 
+-const ReactVersion = '18.0.0-rc.3';
++const ReactVersion = '18.0.0';
+ 
+ // The label used by the @next channel. Represents the upcoming release's
+ // stability. Could be "alpha", "beta", "rc", etc.
+@@ -26,18 +26,18 @@
+ 
+ const stablePackages = {
+   'create-subscription': ReactVersion,
+-  'eslint-plugin-react-hooks': '4.2.1-rc.3',
+-  'jest-react': '0.12.1-rc.3',
++  'eslint-plugin-react-hooks': '4.4.0',
++  'jest-react': '0.12.1',
+   react: ReactVersion,
+   'react-art': ReactVersion,
+   'react-dom': ReactVersion,
+   'react-is': ReactVersion,
+-  'react-reconciler': '0.27.0-rc.3',
+-  'react-refresh': '0.11.0-rc.3',
++  'react-reconciler': '0.27.0',
++  'react-refresh': '0.12.0',
+   'react-test-renderer': ReactVersion,
+-  'use-subscription': '1.6.0-rc.3',
+-  'use-sync-external-store': '1.0.0-rc.3',
+-  scheduler: '0.21.0-rc.3',
++  'use-subscription': '1.6.0',
++  'use-sync-external-store': '1.0.0',
++  scheduler: '0.21.0',
+ };
+ 
+ // These packages do not exist in the @next or @latest channel, only
+diff --git a/a.js b/b.js
+index 23056dab9..5cf81a877 100644
+--- a/a.js
++++ b/b.js
+@@ -1,8 +1,4 @@
+-import React, {
+-  Component,
+-  Suspense,
+-  unstable_startTransition as startTransition,
+-} from 'react';
++import React, {Component, Suspense, startTransition} from 'react';
+ 
+ import Theme, {ThemeToggleButton} from './Theme';
+ 
+diff --git a/a.js b/b.js
+index 37cc25cb7..f6457ce57 100644
+--- a/a.js
++++ b/b.js
+@@ -3,4 +3,4 @@
+ 
+ import App from './components/App';
+ 
+-let root = hydrateRoot(document, <App assets={window.assetManifest} />);
++hydrateRoot(document, <App assets={window.assetManifest} />);
+diff --git a/a.js b/b.js
+index 74df66c5d..3c2f493dd 100644
+--- a/a.js
++++ b/b.js
+@@ -21,6 +21,26 @@
+ async function main() {
+   clear();
+ 
++  await confirm('Have you stopped all NPM DEV scripts?', () => {
++    const packagesPath = relative(process.cwd(), join(__dirname, 'packages'));
++
++    console.log('Stop all NPM DEV scripts in the following directories:');
++    console.log(
++      chalk.bold('  ' + join(packagesPath, 'react-devtools-core')),
++      chalk.gray('(start:backend, start:standalone)')
++    );
++    console.log(
++      chalk.bold('  ' + join(packagesPath, 'react-devtools-inline')),
++      chalk.gray('(start)')
++    );
++
++    const buildAndTestScriptPath = join(__dirname, 'build-and-test.js');
++    const pathToPrint = relative(process.cwd(), buildAndTestScriptPath);
++
++    console.log('\nThen restart this release step:');
++    console.log(chalk.bold.green('  ' + pathToPrint));
++  });
++
+   await confirm('Have you run the prepare-release script?', () => {
+     const prepareReleaseScriptPath = join(__dirname, 'prepare-release.js');
+     const pathToPrint = relative(process.cwd(), prepareReleaseScriptPath);
+diff --git a/a.js b/b.js
+index 16fcb4562..854344df8 100644
+--- a/a.js
++++ b/b.js
+@@ -18,7 +18,7 @@
+ //
+ //   0.0.0-experimental-241c4467e-20200129
+ 
+-const ReactVersion = '18.0.0-rc.2';
++const ReactVersion = '18.0.0';
+ 
+ // The label used by the @next channel. Represents the upcoming release's
+ // stability. Could be "alpha", "beta", "rc", etc.
+@@ -26,18 +26,18 @@
+ 
+ const stablePackages = {
+   'create-subscription': ReactVersion,
+-  'eslint-plugin-react-hooks': '4.2.1-rc.2',
+-  'jest-react': '0.12.1-rc.2',
++  'eslint-plugin-react-hooks': '4.4.0',
++  'jest-react': '0.12.1',
+   react: ReactVersion,
+   'react-art': ReactVersion,
+   'react-dom': ReactVersion,
+   'react-is': ReactVersion,
+-  'react-reconciler': '0.27.0-rc.2',
+-  'react-refresh': '0.11.0-rc.2',
++  'react-reconciler': '0.27.0',
++  'react-refresh': '0.12.0',
+   'react-test-renderer': ReactVersion,
+-  'use-subscription': '1.6.0-rc.2',
+-  'use-sync-external-store': '1.0.0-rc.2',
+-  scheduler: '0.21.0-rc.2',
++  'use-subscription': '1.6.0',
++  'use-sync-external-store': '1.0.0',
++  scheduler: '0.21.0',
+ };
+ 
+ // These packages do not exist in the @next or @latest channel, only
+diff --git a/a.js b/b.js
+index fba746520..4765f41ca 100644
+--- a/a.js
++++ b/b.js
+@@ -9,6 +9,14 @@
+ const theme = require('../theme');
+ 
+ const run = async ({build, cwd, releaseChannel}) => {
++  const CIRCLE_TOKEN = process.env.CIRCLE_CI_API_TOKEN;
++  if (!CIRCLE_TOKEN) {
++    console.error(
++      theme.error('Missing required environment variable: CIRCLE_CI_API_TOKEN')
++    );
++    process.exit(1);
++  }
++
+   const artifacts = await getArtifactsList(build);
+   const buildArtifacts = artifacts.find(entry =>
+     entry.path.endsWith('build.tgz')
+@@ -24,7 +32,7 @@
+   // Download and extract artifact
+   await exec(`rm -rf ./build`, {cwd});
+   await exec(
+-    `curl -L $(fwdproxy-config curl) ${buildArtifacts.url} | tar -xvz`,
++    `curl -L $(fwdproxy-config curl) ${buildArtifacts.url} -H "Circle-Token: ${CIRCLE_TOKEN}" | tar -xvz`,
+     {
+       cwd,
+     }
+diff --git a/a.js b/b.js
+index 194a91e31..de5211f09 100644
+--- a/a.js
++++ b/b.js
+@@ -19,6 +19,7 @@
+     phasedRegistrationNames: $ReadOnly<{|
+       captured: string,
+       bubbled: string,
++      skipBubbling?: ?boolean,
+     |}>,
+   |}>,
+   ...,

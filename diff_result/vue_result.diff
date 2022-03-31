@@ -225,7 +225,7 @@ diff --git a/a.js b/b.js
 index c8734958..9d30d2c7 100644
 --- a/a.js
 +++ b/b.js
-@@ -1249,5 +1249,37 @@ const bar = (resolve) => {
+@@ -1249,5 +1249,37 @@ it('async components with transition-mode out-in', done => {
          }).then(done)
        }
      })
@@ -302,7 +302,7 @@ index ae2a2498..ec7b8757 100644
        stats.modules.forEach(m => {
          // ignore modules duplicated in multiple chunks
          if (m.chunks.length === 1) {
-@@ -43,7 +45,7 @@ const fileToIndex = file =>
+@@ -43,7 +45,7 @@ onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
            if (!chunk || !chunk.files) {
              return
            }

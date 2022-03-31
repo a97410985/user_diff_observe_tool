@@ -1,0 +1,176 @@
+diff --git a/a.js b/b.js
+@@ -33,7 +33,7 @@
+A blob:c3a865928cdf56c231c0ba9fbab3efb9c5351e4a
+  'eslint-plugin-react-hooks': '4.4.0',
+  'jest-react': '0.12.1',
+  react: ReactVersion,
+  'react-art': ReactVersion,
+  'react-dom': ReactVersion,
+  'react-is': ReactVersion,
+  'react-reconciler': '0.27.0',
+  'react-refresh': '0.11.0',
+  'react-test-renderer': ReactVersion,
+  'use-subscription': '1.6.0',
+  'use-sync-external-store': '1.0.0',
+  scheduler: '0.21.0',
+diff --git a/a.js b/b.js
+@@ -18,7 +18,7 @@
+A blob:17fb8ce8474df7705a9da4cf703d75dfc3f4a034
+//
+//   18.0.0-alpha-a1c2d3e4
+//
+// The @experimental channel doesn't include a version, only a date and a sha, e.g.:
+//
+//   0.0.0-experimental-241c4467e-20200129
+
+const ReactVersion = '18.0.0-rc.3';
+
+// The label used by the @next channel. Represents the upcoming release's
+// stability. Could be "alpha", "beta", "rc", etc.
+const nextChannelLabel = 'next';
+diff --git a/a.js b/b.js
+@@ -26,18 +26,18 @@
+A blob:17fb8ce8474df7705a9da4cf703d75dfc3f4a034
+
+// The label used by the @next channel. Represents the upcoming release's
+// stability. Could be "alpha", "beta", "rc", etc.
+const nextChannelLabel = 'next';
+
+const stablePackages = {
+  'create-subscription': ReactVersion,
+  'eslint-plugin-react-hooks': '4.2.1-rc.3',
+  'jest-react': '0.12.1-rc.3',
+  react: ReactVersion,
+  'react-art': ReactVersion,
+  'react-dom': ReactVersion,
+  'react-is': ReactVersion,
+  'react-reconciler': '0.27.0-rc.3',
+  'react-refresh': '0.11.0-rc.3',
+  'react-test-renderer': ReactVersion,
+  'use-subscription': '1.6.0-rc.3',
+  'use-sync-external-store': '1.0.0-rc.3',
+  scheduler: '0.21.0-rc.3',
+};
+
+// These packages do not exist in the @next or @latest channel, only
+// @experimental. We don't use semver, just the commit sha, so this is just a
+diff --git a/a.js b/b.js
+@@ -1,8 +1,4 @@
+A blob:23056dab92a4ac939d3bb14fb5a7803e23170c29
+import React, {
+  Component,
+  Suspense,
+  unstable_startTransition as startTransition,
+} from 'react';
+
+import Theme, {ThemeToggleButton} from './Theme';
+
+import './Chrome.css';
+diff --git a/a.js b/b.js
+@@ -3,4 +3,4 @@
+A blob:37cc25cb71671839d409208bd83e766cbf7d9e77
+import React from 'react';
+import {hydrateRoot} from 'react-dom/client';
+
+import App from './components/App';
+
+let root = hydrateRoot(document, <App assets={window.assetManifest} />);
+
+diff --git a/a.js b/b.js
+@@ -21,6 +21,26 @@
+A blob:74df66c5d6d28003d177c60c45cc93cc9d195e0e
+  saveBuildMetadata,
+} = require('./utils');
+
+// This is the primary control function for this script.
+async function main() {
+  clear();
+
+  await confirm('Have you run the prepare-release script?', () => {
+    const prepareReleaseScriptPath = join(__dirname, 'prepare-release.js');
+    const pathToPrint = relative(process.cwd(), prepareReleaseScriptPath);
+
+diff --git a/a.js b/b.js
+@@ -18,7 +18,7 @@
+A blob:16fcb45623e67b4707e1ff5522e139a754662058
+//
+//   18.0.0-alpha-a1c2d3e4
+//
+// The @experimental channel doesn't include a version, only a date and a sha, e.g.:
+//
+//   0.0.0-experimental-241c4467e-20200129
+
+const ReactVersion = '18.0.0-rc.2';
+
+// The label used by the @next channel. Represents the upcoming release's
+// stability. Could be "alpha", "beta", "rc", etc.
+const nextChannelLabel = 'next';
+diff --git a/a.js b/b.js
+@@ -26,18 +26,18 @@
+A blob:16fcb45623e67b4707e1ff5522e139a754662058
+
+// The label used by the @next channel. Represents the upcoming release's
+// stability. Could be "alpha", "beta", "rc", etc.
+const nextChannelLabel = 'next';
+
+const stablePackages = {
+  'create-subscription': ReactVersion,
+  'eslint-plugin-react-hooks': '4.2.1-rc.2',
+  'jest-react': '0.12.1-rc.2',
+  react: ReactVersion,
+  'react-art': ReactVersion,
+  'react-dom': ReactVersion,
+  'react-is': ReactVersion,
+  'react-reconciler': '0.27.0-rc.2',
+  'react-refresh': '0.11.0-rc.2',
+  'react-test-renderer': ReactVersion,
+  'use-subscription': '1.6.0-rc.2',
+  'use-sync-external-store': '1.0.0-rc.2',
+  scheduler: '0.21.0-rc.2',
+};
+
+// These packages do not exist in the @next or @latest channel, only
+// @experimental. We don't use semver, just the commit sha, so this is just a
+diff --git a/a.js b/b.js
+@@ -9,6 +9,14 @@
+A blob:fba746520273924755ef14395432823da1387a1f
+const {exec} = require('child-process-promise');
+const {existsSync} = require('fs');
+const {join} = require('path');
+const {getArtifactsList, logPromise} = require('../utils');
+const theme = require('../theme');
+
+const run = async ({build, cwd, releaseChannel}) => {
+  const artifacts = await getArtifactsList(build);
+  const buildArtifacts = artifacts.find(entry =>
+    entry.path.endsWith('build.tgz')
+  );
+diff --git a/a.js b/b.js
+@@ -24,7 +32,7 @@
+A blob:fba746520273924755ef14395432823da1387a1f
+    );
+    process.exit(1);
+  }
+
+  // Download and extract artifact
+  await exec(`rm -rf ./build`, {cwd});
+  await exec(
+    `curl -L $(fwdproxy-config curl) ${buildArtifacts.url} | tar -xvz`,
+    {
+      cwd,
+    }
+  );
+diff --git a/a.js b/b.js
+@@ -19,6 +19,7 @@
+A blob:194a91e31ae6241a2a2edbb210735268e7c7775c
+
+// Event configs
+const customBubblingEventTypes: {
+  [eventName: string]: $ReadOnly<{|
+    phasedRegistrationNames: $ReadOnly<{|
+      captured: string,
+      bubbled: string,
+    |}>,
+  |}>,
+  ...,
+} = {};

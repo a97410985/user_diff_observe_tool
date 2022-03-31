@@ -1,6 +1,6 @@
 diff --git a/a.js b/b.js
 @@ -14,7 +14,7 @@ it('should update a vue object', done => {
-A blob:
+A blob:d1c7f3d8709ce51fb653bf0d03ee5fa2b2208fcd
 import Vue from 'vue'
 
 describe('Global API: set/delete', () => {
@@ -24,7 +24,7 @@ describe('Global API: set/delete', () => {
       }).$mount()
 diff --git a/a.js b/b.js
 @@ -26,7 +26,7 @@ it('should update a observing object', done => {
-A blob:
+A blob:d1c7f3d8709ce51fb653bf0d03ee5fa2b2208fcd
       waitForUpdate(() => {
         expect(vm.$el.innerHTML).toBe('2')
       }).then(done)
@@ -49,7 +49,7 @@ A blob:
       }).$mount()
 diff --git a/a.js b/b.js
 @@ -35,7 +35,7 @@ export function isPrimitive (value: any): boolean %checks {
-A blob:
+A blob:9f240c77b142a432eb871e62b0d03ce1b6163aaf
 }
 
 /**
@@ -74,7 +74,7 @@ export function isObject (obj: mixed): boolean %checks {
   return obj !== null && typeof obj === 'object'
 diff --git a/a.js b/b.js
 @@ -22,7 +22,7 @@ export function createInstanceContext (
-A blob:
+A blob:a23775d4db5c97c9049959b536cd863e918af0ed
 const instanceOptions: { [key: string]: WeexInstanceOption } = {}
 
 /**
@@ -100,7 +100,7 @@ export function createInstanceContext (
   const timerAPIs = getInstanceTimer(instanceId, weex.requireModule)
 diff --git a/a.js b/b.js
 @@ -7,7 +7,7 @@ describe('Component async', () => {
-A blob:
+A blob:1e492f7f617010e8ed82638789c7a29917170e0e
 import Vue from 'vue'
 import { Promise } from 'es6-promise'
 
@@ -117,7 +117,7 @@ describe('Component async', () => {
   beforeEach(function () {
 diff --git a/a.js b/b.js
 @@ -31,7 +31,7 @@ expect(spy.calls.count()).toBe(1)
-A blob:
+A blob:df9ab8db8e977f3cd239953afd476eaf2933787e
       el,
       template: '<div v-on:click="foo"></div>',
       methods: { foo: spy }
@@ -137,7 +137,7 @@ A blob:
       methods: { foo: spy }
 diff --git a/a.js b/b.js
 @@ -52,7 +52,7 @@ renderToString(new Vue({
-A blob:
+A blob:09ce8e7dd46bccfbe9380990dac4eed683ee5c97
 import Vue from '../../dist/vue.runtime.common.js'
 import renderToString from '../../packages/vue-server-renderer/basic'
 
@@ -199,7 +199,7 @@ describe('SSR: basicRenderer', () => {
         <div></div>
 diff --git a/a.js b/b.js
 @@ -1327,7 +1327,7 @@ waitForUpdate(() => {
-A blob:
+A blob:8e9d584ae3ed6b379d3cff646c89bd7977672d1b
       }
     }).$mount()
 
@@ -218,7 +218,7 @@ A blob:
 
 diff --git a/a.js b/b.js
 @@ -31,7 +31,7 @@ expect(spy.calls.count()).toBe(1)
-A blob:
+A blob:7c252031172f41d10f61fb6f3765887094c6307c
       el,
       template: '<div v-on:click="foo"></div>',
       methods: { foo: spy }
@@ -238,7 +238,7 @@ A blob:
       methods: { foo: spy }
 diff --git a/a.js b/b.js
 @@ -218,7 +218,7 @@ expect(spy).toHaveBeenCalled()
-A blob:
+A blob:7c252031172f41d10f61fb6f3765887094c6307c
       methods: { foo: spy }
     })
     triggerEvent(vm.$el, 'keyup', e => {
@@ -255,7 +255,7 @@ A blob:
         <div>
 diff --git a/a.js b/b.js
 @@ -23,7 +23,7 @@ function transformNode (el: ASTElement, options: CompilerOptions) {
-A blob:
+A blob:dcb5a229c2be241cfc2beff325427d5a1fb0e2f5
   getAndRemoveAttr,
   getBindingAttr,
   baseWarn
@@ -284,7 +284,7 @@ function transformNode (el: ASTElement, options: CompilerOptions) {
     el.classBinding = classBinding
 diff --git a/a.js b/b.js
 @@ -1351,7 +1351,7 @@ renderVmWithOptions({
-A blob:
+A blob:b4f962872f549b02664e9e6731978cdf4407f434
     })
   })
 
@@ -304,7 +304,7 @@ A blob:
 
 diff --git a/a.js b/b.js
 @@ -152,6 +152,39 @@ waitForUpdate(() => {
-A blob:
+A blob:0ee3380ca9afd2d620e1d1e4be302bcfe7d9855f
         test: { a: true, b: false }
       }
     }).$mount()
@@ -320,8 +320,22 @@ A blob:
   it('properly remove staticClass for toggling un-keyed children', done => {
     const vm = new Vue({
 diff --git a/a.js b/b.js
+@@ -5,6 +5,7 @@
+A blob:ecb08af32de67301f3a86a26b4f3b7052e132457
+/* @flow */
+
+import { isDef, isUndef } from 'shared/util'
+import { updateListeners } from 'core/vdom/helpers/index'
+import { isIE, isFF, supportsPassive, isUsingMicroTask } from 'core/util/index'
+import { RANGE_TOKEN, CHECKBOX_RADIO_TOKEN } from 'web/compiler/directives/model'
+import { currentFlushTimestamp } from 'core/observer/scheduler'
+
+// normalize v-model event tokens that can only be determined at runtime.
+// it's important to place the event as the first in the array because
+// the whole point is ensuring the v-model callback gets called before
+diff --git a/a.js b/b.js
 @@ -108,7 +109,9 @@ function updateDOMListeners (oldVnode: VNodeWithData, vnode: VNodeWithData) {
-A blob:
+A blob:ecb08af32de67301f3a86a26b4f3b7052e132457
     handler._wrapper || handler,
     capture
   )
@@ -340,7 +354,7 @@ function updateDOMListeners (oldVnode: VNodeWithData, vnode: VNodeWithData) {
 }
 diff --git a/a.js b/b.js
 @@ -116,5 +119,6 @@ updateListeners(on, oldOn, add, remove, createOnceHandler, vnode.context)
-A blob:
+A blob:ecb08af32de67301f3a86a26b4f3b7052e132457
   }
   const on = vnode.data.on || {}
   const oldOn = oldVnode.data.on || {}
@@ -356,8 +370,17 @@ export default {
 }
 
 diff --git a/a.js b/b.js
-@@ -1249,5 +1249,37 @@ const bar = (resolve) => {
-A blob:
+@@ -1249,5 +1249,37 @@ it('async components with transition-mode out-in', done => {
+A blob:c87349588235ceaa134700674498a4a9cf0d7ce3
+          '<div class="test">foo</div>'
+        )
+      }).then(done)
+    })
+
+    it('async components with transition-mode out-in', done => {
+      const barResolve = jasmine.createSpy('bar resolved')
+      let next
+      const foo = (resolve) => {
         setTimeout(() => {
           resolve(one)
           Vue.nextTick(next)
@@ -441,8 +464,18 @@ A blob:
 })
 
 diff --git a/a.js b/b.js
+@@ -1,6 +1,6 @@
+A blob:ae2a2498672c5e207a84e9cc41c8f30cf237df5a
+const hash = require('hash-sum')
+const uniq = require('lodash.uniq')
+import { isJS, isCSS, onEmit } from './util'
+
+export default class VueSSRClientPlugin {
+  constructor (options = {}) {
+    this.options = Object.assign({
+diff --git a/a.js b/b.js
 @@ -10,7 +10,8 @@ constructor (options = {}) {
-A blob:
+A blob:ae2a2498672c5e207a84e9cc41c8f30cf237df5a
 const hash = require('hash-sum')
 const uniq = require('lodash.uniq')
 import { isJS, isCSS, onEmit } from './util'
@@ -462,7 +495,7 @@ export default class VueSSRClientPlugin {
         .map(a => a.name))
 diff --git a/a.js b/b.js
 @@ -19,6 +20,7 @@ onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
-A blob:
+A blob:ae2a2498672c5e207a84e9cc41c8f30cf237df5a
       filename: 'vue-ssr-client-manifest.json'
     }, options)
   }
@@ -483,7 +516,7 @@ A blob:
         .filter((file) => isJS(file) || isCSS(file))
 diff --git a/a.js b/b.js
 @@ -34,7 +36,7 @@ onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
-A blob:
+A blob:ae2a2498672c5e207a84e9cc41c8f30cf237df5a
       filename: 'vue-ssr-client-manifest.json'
     }, options)
   }
@@ -519,8 +552,32 @@ A blob:
         if (m.chunks.length === 1) {
           const cid = m.chunks[0]
 diff --git a/a.js b/b.js
-@@ -43,7 +45,7 @@ const fileToIndex = file =>
-A blob:
+@@ -43,7 +45,7 @@ onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
+A blob:ae2a2498672c5e207a84e9cc41c8f30cf237df5a
+      filename: 'vue-ssr-client-manifest.json'
+    }, options)
+  }
+
+  apply (compiler) {
+    onEmit(compiler, 'vue-client-plugin', (compilation, cb) => {
+      const stats = compilation.getStats().toJson()
+
+      const allFiles = uniq(stats.assets
+        .map(a => a.name))
+
+      const initialFiles = uniq(Object.keys(stats.entrypoints)
+        .map(name => stats.entrypoints[name].assets)
+        .reduce((assets, all) => all.concat(assets), [])
+        .filter((file) => isJS(file) || isCSS(file)))
+
+      const asyncFiles = allFiles
+        .filter((file) => isJS(file) || isCSS(file))
+        .filter(file => initialFiles.indexOf(file) < 0)
+
+      const manifest = {
+        publicPath: stats.publicPath,
+        all: allFiles,
+        initial: initialFiles,
         async: asyncFiles,
         modules: { /* [identifier: string]: Array<index: number> */ }
       }
@@ -541,8 +598,16 @@ A blob:
           assetModules.forEach(m => {
             if (m.chunks.some(id => id === cid)) {
 diff --git a/a.js b/b.js
+@@ -1,4 +1,4 @@
+A blob:305b4bab58bb5638e2227de398afde7f8f13917a
+import { validate, isJS, onEmit } from './util'
+
+export default class VueSSRServerPlugin {
+  constructor (options = {}) {
+    this.options = Object.assign({
+diff --git a/a.js b/b.js
 @@ -10,7 +10,8 @@ constructor (options = {}) {
-A blob:
+A blob:305b4bab58bb5638e2227de398afde7f8f13917a
 import { validate, isJS, onEmit } from './util'
 
 export default class VueSSRServerPlugin {
@@ -562,7 +627,7 @@ export default class VueSSRServerPlugin {
 
 diff --git a/a.js b/b.js
 @@ -20,7 +21,9 @@ onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
-A blob:
+A blob:305b4bab58bb5638e2227de398afde7f8f13917a
   }
 
   apply (compiler) {
@@ -585,7 +650,7 @@ A blob:
           `Server-side bundle should have one single entry file. ` +
 diff --git a/a.js b/b.js
 @@ -42,14 +45,14 @@ onEmit(compiler, 'vue-server-plugin', (compilation, cb) => {
-A blob:
+A blob:305b4bab58bb5638e2227de398afde7f8f13917a
   }
 
   apply (compiler) {
@@ -636,8 +701,28 @@ A blob:
       const json = JSON.stringify(bundle, null, 2)
       const filename = this.options.filename
 diff --git a/a.js b/b.js
+@@ -1,16 +1,27 @@
+A blob:94a204a22b2a75aafa7c461df7fedee2271ad0a8
+const { red, yellow } = require('chalk')
+
+const prefix = `[vue-server-renderer-webpack-plugin]`
+const warn = exports.warn = msg => console.error(red(`${prefix} ${msg}\n`))
+const tip = exports.tip = msg => console.log(yellow(`${prefix} ${msg}\n`))
+
+export const validate = compiler => {
+  if (compiler.options.target !== 'node') {
+    warn('webpack config `target` should be "node".')
+  }
+
+  if (compiler.options.output && compiler.options.output.libraryTarget !== 'commonjs2') {
+    warn('webpack config `output.libraryTarget` should be "commonjs2".')
+  }
+
+  if (!compiler.options.externals) {
+    tip(
+diff --git a/a.js b/b.js
 @@ -21,8 +32,20 @@ tip(
-A blob:
+A blob:94a204a22b2a75aafa7c461df7fedee2271ad0a8
   if (compiler.options.output && compiler.options.output.libraryTarget !== 'commonjs2') {
     warn('webpack config `output.libraryTarget` should be "commonjs2".')
   }
@@ -658,7 +743,7 @@ export const onEmit = (compiler, name, hook) => {
     // Webpack < 4.0.0
 diff --git a/a.js b/b.js
 @@ -31,4 +54,20 @@ tip(
-A blob:
+A blob:94a204a22b2a75aafa7c461df7fedee2271ad0a8
   if (compiler.options.output && compiler.options.output.libraryTarget !== 'commonjs2') {
     warn('webpack config `output.libraryTarget` should be "commonjs2".')
   }
@@ -685,7 +770,7 @@ export { isJS, isCSS } from '../util'
 
 diff --git a/a.js b/b.js
 @@ -61,10 +61,10 @@   const normalized = function () {
-A blob:
+A blob:15ab396d2094232a9c2f9d217cef064d7e880978
   def(res, '$hasNormal', hasNormalSlots)
   return res
 }
@@ -706,7 +791,7 @@ function normalizeScopedSlot(normalSlots, key, fn) {
   // this is a slot using the new v-slot syntax without scope. although it is
 diff --git a/a.js b/b.js
 @@ -986,4 +986,18 @@ waitForUpdate(() => {
-A blob:
+A blob:c6e20e49749421a3284f4acc686d42b2a0373f0d
         }
       }
     }).$mount()
@@ -722,7 +807,7 @@ A blob:
 
 diff --git a/a.js b/b.js
 @@ -694,6 +694,34 @@ renderToString(new Vue({
-A blob:
+A blob:61abfce9a2f07883a9cc77fef5345d5b7d527592
     })
   })
 
@@ -751,7 +836,7 @@ A blob:
         <div>
 diff --git a/a.js b/b.js
 @@ -1323,7 +1351,7 @@ renderVmWithOptions({
-A blob:
+A blob:61abfce9a2f07883a9cc77fef5345d5b7d527592
     })
   })
 
