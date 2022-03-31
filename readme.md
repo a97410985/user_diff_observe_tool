@@ -3,7 +3,7 @@ This is a very simple tool for assisting observe the diff result.
 ### How to use
 1. This tool would look at projects inside the `observed_projects` folder. And show all projects' diff for the newest 50 commits. The project need to exist `.gitattribute`, which contain `*.js diff=javascript` like setting.
 2. Modidy `gitBinPath` variable in `main.py` into your git binary path.
-3. After executing `main.py`, the diff_result directory will contain <XXX>_content.txt and <XXX>_result.diff. Ex:
+3. After executing `main.py`, the diff_result directory will contain <???>_content.txt and <???>_result.diff. Ex:
     has jquery_content.txt, below is one diff's result in jquery_content.txt
     ```text
     diff --git a/a.js b/b.js
